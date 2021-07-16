@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import model.Deletable;
 import model.Esemplare;
 import model.Insertable;
 
@@ -21,14 +22,14 @@ public class DBManager {
 	 * 3. creazione di uno statement generico, il quale viene modificato solo all'interno dei metodi e poi ripassato una volta completato, e messo infinne a null per resettarlo.
 	 */
 	
-	public String insertNew(Insertable ins) {
+	public void insertNew(Insertable ins) throws SQLException {
         
 		PreparedStatement statement = null; 
 		
 		//System.out.println("Inserisici " + esemplare.getAttributesForQuery());
 		//String insertEsemplare = "insert into esemplare values(?, ?, ?, ?, ?, ?, ?, ?)";
-		String query = "insert into" + ins.getAttributesForQuery();
-		try {
+		String query = "insert into " + ins.getAttributesForQuery();
+		//try {
             statement = connection.prepareStatement(query);
             /*
             statement.setString(1, esemplare.getCodiceEsemplare());
@@ -41,63 +42,55 @@ public class DBManager {
             statement.setString(8, esemplare.getCodiceSalone());
             */
             statement.executeUpdate();
-        }
-        catch (SQLException e) {
-           	return e.getMessage();
-        }
-        finally {
-            try {
-                if (statement != null) 
+        //}
+        //catch (SQLException e) {
+       //    	e.getMessage();
+       // }
+        //finally {
+        //    try {
+               if (statement != null)
                     statement.close();
                 if (connection!= null)
                     connection.close();
-            }
-            catch (SQLException e) {
-	            return  e.getMessage();
-            }
-            return "";
-        }
+           // }
+       //     catch (SQLException e) {
+	    //        return  e.getMessage();
+        //    }
+        //    return "";
+        //}
+	}
+
+	public void delete(Deletable dt) throws SQLException {
+		PreparedStatement statement = null;
+		String query = "delete from " + dt.getStringForQuery();
+		//try {
+			statement = connection.prepareStatement(query);
+			statement.executeUpdate();
+		//}
+		//catch (SQLException e) {
+		//	return e.getMessage();
+		//}
+		//finally {
+		//	try {
+				if (statement != null)
+					statement.close();
+				if (connection!= null)
+					connection.close();
+		//	}
+		//	catch (SQLException e) {
+		//		return  e.getMessage();
+		//	}
+		//	return "";
+		//}
 	}
 	
-	public void insertNewPianta() {
-		String insertPianta = "insert into pianta values(?, ?, ?, ?, ?)";
-	}
-	
-	public void insertNewOrdine() {
-		String insertOrdine = "insert into ordine values(?, ?, ?)";
-	}
-	
-	public void insertNewVasca() {
-		String insetVasca = "insert into vasca values(?, ?, ?, ?, ?, ?)";
-	}
-	
-	public void insertNewIngresso() {
-		String insertIngresso = "insert into ingresso values(?, ?, ?, ?, ?, ?, ?, ?, ?)"; // da verificare, alcuni attributi derivano da abbonato
-	}
-	
-	public void insertNewAbbonato() {
-		String insertAbbonato = "insert into abbonato values(?, ?, ?, ?, ?, ?, ?, ?)";
-	}
-	
-	public void deleteEsemplare() {
-		String delteEsemplare = "delete from esemplare where code = ?"; // da verificare anche questa delete, non sono sicuro rimuova quello giusto 
-	}
-	
-	public void deletePianta() {
-		String deletePianta = "delete from pianta where code = ?";
-	}
-	
-	public void insertNewStaffIntoEvent() {
+	/*public void insertNewStaffIntoEvent() {
 		String insertStaff = ""; //finire
-	}
-	
-	public void insertNewImpiegato() {
-		String insertImpiegato = "insert into staff values(?, ?, ?, ?, ?, ?, ?, ?)";
-	}
-	
-	public void insertNewManutenzioneVasca() {
-		String insertManut = " "; // finire
-	}
+	}*/
+
+	//public void insertNewManutenzioneVasca() {
+		//String insertManut = " "; // finire
+	//}
 	
 	public void viewMangimeRichiestoVasca() {
 		String selectMangimeFromVasca = "select * from vasca"; //finire

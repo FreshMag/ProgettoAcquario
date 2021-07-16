@@ -6,7 +6,7 @@ public class Staff extends Persona{
     private String IDImpiegato;
     private String ruolo;
 
-    public Staff(String codiceFiscale, String nome, String cognome, Date dataNascita, String contatto, String indirizzo, String IDImpiegato, String Ruolo) {
+    public Staff(String codiceFiscale, String nome, String cognome, String dataNascita, String contatto, String indirizzo, String IDImpiegato, String Ruolo) {
         super(codiceFiscale, nome, cognome, dataNascita, contatto, indirizzo);
         this.IDImpiegato = IDImpiegato;
         this.ruolo = Ruolo;

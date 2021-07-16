@@ -1,6 +1,6 @@
 package model;
 
-public class Pianta implements Insertable{
+public class Pianta implements Insertable, Deletable{
     private String codiceVegetale;
     private float pesoKg;
     private String nomeScientifico;
@@ -13,6 +13,10 @@ public class Pianta implements Insertable{
         this.nomeScientifico = nomeScientifico;
         this.numeroVasca = numeroVasca;
         this.codiceSalone = codiceSalone;
+    }
+
+    public Pianta(String codiceVegetale) {
+        this.codiceVegetale = codiceVegetale;
     }
 
     public String getCodiceVegetale() {
@@ -62,5 +66,10 @@ public class Pianta implements Insertable{
         + nomeScientifico + ", "
         + numeroVasca + ", "
         + codiceSalone + ")";
+    }
+
+    @Override
+    public String getStringForQuery() {
+        return "pianta where CodiceVegetale = " + codiceVegetale;
     }
 }

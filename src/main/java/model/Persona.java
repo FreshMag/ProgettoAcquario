@@ -7,11 +7,11 @@ public class Persona implements Insertable
     private String codiceFiscale;
     private String nome;
     private String cognome;
-    private Date dataNascita;
+    private String dataNascita;
     private String contatto;
     private String indirizzo;
 
-    public Persona(String codiceFiscale, String nome, String cognome, Date dataNascita, String contatto, String indirizzo) {
+    public Persona(String codiceFiscale, String nome, String cognome, String dataNascita, String contatto, String indirizzo) {
         this.codiceFiscale = codiceFiscale;
         this.nome = nome;
         this.cognome = cognome;
@@ -44,11 +44,11 @@ public class Persona implements Insertable
         this.cognome = cognome;
     }
 
-    public Date getDataNascita() {
+    public String getDataNascita() {
         return dataNascita;
     }
 
-    public void setDataNascita(Date dataNascita) {
+    public void setDataNascita(String dataNascita) {
         this.dataNascita = dataNascita;
     }
 

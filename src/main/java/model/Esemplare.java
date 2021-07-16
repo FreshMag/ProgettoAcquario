@@ -1,6 +1,6 @@
 package model;
 
-public class Esemplare implements Insertable{
+public class Esemplare implements Insertable, Deletable{
 	//IMPORTANTE: HO CAMBIATO SESSO IN STRING, PERCHE CHAR NON MI FUNZIONAVA//
     private String codiceEsemplare;
     private String luogoNascita;
@@ -21,6 +21,10 @@ public class Esemplare implements Insertable{
         this.nomeScientifico = nomeScientifico;
         this.numeroVasca = numeroVasca;
         this.codiceSalone = codiceSalone;
+    }
+
+    public Esemplare(String codiceEsemplare) {
+        this.codiceEsemplare = codiceEsemplare;
     }
 
     public String getCodiceEsemplare() {
@@ -101,4 +105,9 @@ public class Esemplare implements Insertable{
         + numeroVasca + ", "
         + codiceSalone + ")";
 	}
+
+    @Override
+    public String getStringForQuery() {
+        return "esemplare where CodiceEsemplare = " + codiceEsemplare;
+    }
 }
