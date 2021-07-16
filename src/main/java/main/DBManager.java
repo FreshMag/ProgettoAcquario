@@ -4,15 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import model.Deletable;
-import model.Esemplare;
-import model.Insertable;
-import model.Risorsa;
+import model.*;
 
 public class DBManager {
 
@@ -123,15 +121,60 @@ public class DBManager {
 		return output;
 	}
 	
-	public void viewIngressiRecenti() {
-		String selectIngressi = "select * from ingressi"; //finire
+	public List<Ingresso> viewIngressiRecenti() throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from ingressi where DataIngresso between" + LocalDate.now().minusWeeks(1) + " and " + LocalDate.now(); //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Ingresso> output = new ArrayList<>();
+		while(result.next()) {
+			Ingresso e = new Ingresso(result.getString("CodiceBiglietto"), result.getDate("DataIngresso").toString(),
+					result.getFloat("Prezzo"), result.getInt("NumeroPartecipanti"), result.getDate("DataAcquisto").toString(),
+					result.getString("Nome"), result.getDate("DataEvento").toString(), result.getTimestamp("OrarioInizio").toString(),
+					result.getString("CodiceFiscale"));
+			output.add(e);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
 	}
 	
-	public void viewEventiOggi() {
-		String selectEventiOggi = "select * from evento"; //finire
+	public List<Evento> viewEventiOggi() throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from evento where DataEvento = " + LocalDate.now().toString(); //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Evento> output = new ArrayList<>();
+		while(result.next()) {
+			Evento e = new Evento(result.getDate("DataEvento").toString(), result.getString("Nome"), result.getTimestamp("OrarioInizio").toString(),
+					result.getTimestamp("OrarioFine").toString(), result.getString("CodiceFiscale"));
+			output.add(e);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
 	}
 	
-	public void viewInventarioRisorse() {
-		String selectRisorse = "select * from risorse"; //finire
+	public List<Risorsa> viewInventarioRisorse() throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from risorsa"; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Risorsa> output = new ArrayList<>();
+		while(result.next()) {
+			Risorsa risorsa = new Risorsa(result.getString("CodiceOrdine"), result.getInt("Quantita"),
+					result.getString("Nome"),result.getFloat("CostoSingolo"),result.getString("Tipologia"),
+					result.getString("Marca"), result.getInt("NumeroVasca"), result.getString("CodiceSalone"));
+			output.add(risorsa);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
 	}
 }
