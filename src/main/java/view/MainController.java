@@ -3,13 +3,18 @@ package view;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import main.DBManager;
 import model.*;
 
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,8 +44,7 @@ public class MainController {
         nodes.add(b);
         int i = 0;
         for (String attr : attributes) {
-            TextField fieldName = new TextField(attr);
-            fieldName.setEditable(false);
+            Label fieldName = new Label(attr);
             TextField fieldValue = new TextField();
             nodes.add(fieldValue);
             pane.add(fieldName,0,i);
@@ -202,8 +206,61 @@ public class MainController {
     public void printMangime() {
         Stage popUp = new Stage();
         popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
         GridPane pane = new GridPane();
+        Label name1 = new Label("Numero vasca");
+        Label name2 = new Label("CodiceSalone");
+        TextField field1 = new TextField();
+        TextField field2 = new TextField();
+        Button launchQ = new Button("Visualizza Risultati");
+        pane.add(name1, 0,0);
+        pane.add(name2, 0,1);
+        pane.add(field1,1,0);
+        pane.add(field2,1,1);
+        pane.add(launchQ,0,2);
+        anchor.setTop(pane);
 
+        TableView<Risorsa> table = new TableView<Risorsa>();
+        TableColumn<Risorsa, String> codOrdCol = new TableColumn<Risorsa, String>("Codice Ordine");
+        codOrdCol.setCellValueFactory(new PropertyValueFactory<Risorsa, String>("codiceOrdine"));
+        TableColumn<Risorsa, Integer> quantCol = new TableColumn<Risorsa, Integer>("Quantita'");
+        quantCol.setCellValueFactory(new PropertyValueFactory<Risorsa, Integer>("quantita"));
+        TableColumn<Risorsa, String> nomeCol = new TableColumn<Risorsa, String>("Nome");
+        nomeCol.setCellValueFactory(new PropertyValueFactory<Risorsa, String>("nome"));
+        TableColumn<Risorsa, Float> cosSingCol = new TableColumn<Risorsa, Float>("Costo Singolo");
+        cosSingCol.setCellValueFactory(new PropertyValueFactory<Risorsa, Float>("costoSingolo"));
+        TableColumn<Risorsa, String> tipCol = new TableColumn<Risorsa, String>("Tipologia");
+        tipCol.setCellValueFactory(new PropertyValueFactory<Risorsa, String>("tipologia"));
+        TableColumn<Risorsa, String> marcaCol = new TableColumn<Risorsa, String>("Marca");
+        marcaCol.setCellValueFactory(new PropertyValueFactory<Risorsa, String>("marca"));
+        TableColumn<Risorsa, Integer> numVasCol = new TableColumn<Risorsa, Integer>("Numero Vasca");
+        numVasCol.setCellValueFactory(new PropertyValueFactory<Risorsa, Integer>("numeroVasca"));
+        TableColumn<Risorsa, String> codSalCol = new TableColumn<Risorsa, String>("Codice Salone");
+        codSalCol.setCellValueFactory(new PropertyValueFactory<Risorsa, String>("codiceSalone"));
+
+        table.getColumns().add(codOrdCol);
+        table.getColumns().add(quantCol);
+        table.getColumns().add(nomeCol);
+        table.getColumns().add(cosSingCol);
+        table.getColumns().add(tipCol);
+        table.getColumns().add(marcaCol);
+        table.getColumns().add(numVasCol);
+        table.getColumns().add(codSalCol);
+
+        launchQ.setOnAction(e -> {
+            try {
+                for (Risorsa r : db.viewMangimeRichiestoVasca(Integer.parseInt(field1.getText()), field2.getText())) {
+                    table.getItems().add(r);
+                }
+            } catch (SQLException throwables) {
+                printError(throwables.getMessage());
+            }
+        });
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
     }
     @FXML
     public void printRecentEntries() {}

@@ -2,12 +2,17 @@ package main;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 import model.Deletable;
 import model.Esemplare;
 import model.Insertable;
+import model.Risorsa;
 
 public class DBManager {
 
@@ -92,8 +97,23 @@ public class DBManager {
 		//String insertManut = " "; // finire
 	//}
 	
-	public void viewMangimeRichiestoVasca() {
-		String selectMangimeFromVasca = "select * from vasca"; //finire
+	public List<Risorsa> viewMangimeRichiestoVasca(int numeroVasca, String codiceSalone) throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from vasca where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone  ; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Risorsa> output = new ArrayList<>();
+		while(result.next()) {
+			Risorsa risorsa = new Risorsa(result.getString("CodiceOrdine"), result.getInt("Quantita"),
+					result.getString("Nome"),result.getFloat("CostoSingolo"),result.getString("Tipologia"),
+					result.getString("Marca"), result.getInt("NumeroVasca"), result.getString("CodiceSalone"));
+			output.add(risorsa);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
 	}
 	
 	public void viewIngressiRecenti() {
