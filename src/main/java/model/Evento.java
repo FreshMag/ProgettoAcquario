@@ -3,14 +3,14 @@ package model;
 import java.time.Clock;
 import java.util.Date;
 
-public class Evento {
-    private Date dataEvento;
+public class Evento implements Insertable{
+    private String dataEvento;
     private String nome;
-    private Clock orarioInizio;
-    private Clock orarioFine;
+    private String orarioInizio;
+    private String orarioFine;
     private String codiceFiscale;
 
-    public Evento(Date dataEvento, String nome, Clock orarioInizio, Clock orarioFine, String codiceFiscale) {
+    public Evento(String dataEvento, String nome, String orarioInizio, String orarioFine, String codiceFiscale) {
         this.dataEvento = dataEvento;
         this.nome = nome;
         this.orarioInizio = orarioInizio;
@@ -18,11 +18,11 @@ public class Evento {
         this.codiceFiscale = codiceFiscale;
     }
 
-    public Date getDataEvento() {
+    public String getDataEvento() {
         return dataEvento;
     }
 
-    public void setDataEvento(Date dataEvento) {
+    public void setDataEvento(String dataEvento) {
         this.dataEvento = dataEvento;
     }
 
@@ -34,19 +34,19 @@ public class Evento {
         this.nome = nome;
     }
 
-    public Clock getOrarioInizio() {
+    public String getOrarioInizio() {
         return orarioInizio;
     }
 
-    public void setOrarioInizio(Clock orarioInizio) {
+    public void setOrarioInizio(String orarioInizio) {
         this.orarioInizio = orarioInizio;
     }
 
-    public Clock getOrarioFine() {
+    public String getOrarioFine() {
         return orarioFine;
     }
 
-    public void setOrarioFine(Clock orarioFine) {
+    public void setOrarioFine(String orarioFine) {
         this.orarioFine = orarioFine;
     }
 
@@ -56,5 +56,14 @@ public class Evento {
 
     public void setCodiceFiscale(String codiceFiscale) {
         this.codiceFiscale = codiceFiscale;
+    }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "evento values(" + dataEvento.toString() + ", "
+        + nome + ", "
+        + orarioInizio + ", "
+        + orarioFine + ", "
+        + codiceFiscale + ")";
     }
 }

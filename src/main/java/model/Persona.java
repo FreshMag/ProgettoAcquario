@@ -2,7 +2,8 @@ package model;
 
 import java.util.Date;
 
-public class Persona {
+public class Persona implements Insertable
+{
     private String codiceFiscale;
     private String nome;
     private String cognome;
@@ -65,5 +66,10 @@ public class Persona {
 
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = indirizzo;
+    }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "persona values(" + codiceFiscale + ", "+ nome + ", " + cognome + ", "+ dataNascita + ", " + contatto + ", " + indirizzo + ")";
     }
 }

@@ -1,6 +1,6 @@
 package model;
 
-public class Esemplare {
+public class Esemplare implements Insertable{
 	//IMPORTANTE: HO CAMBIATO SESSO IN STRING, PERCHE CHAR NON MI FUNZIONAVA//
     private String codiceEsemplare;
     private String luogoNascita;
@@ -92,6 +92,13 @@ public class Esemplare {
      * @return null
      */
 	public String getAttributesForQuery() {
-		return new String("values(" + ")");
+	    return "esemplare values(" + codiceEsemplare + ", "
+        + luogoNascita + ", "
+        + sesso + ", "
+        + peso + ", "
+        + quantitaMangimeHg + ", "
+        + nomeScientifico + ", "
+        + numeroVasca + ", "
+        + codiceSalone + ")";
 	}
 }

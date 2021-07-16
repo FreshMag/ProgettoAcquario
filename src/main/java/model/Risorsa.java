@@ -1,6 +1,6 @@
 package model;
 
-public class Risorsa {
+public class Risorsa implements Insertable{
     private String codiceOrdine;
     private int quantita;
     private String nome;
@@ -83,5 +83,17 @@ public class Risorsa {
 
     public void setCodiceSalone(String codiceSalone) {
         this.codiceSalone = codiceSalone;
+    }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "risorsa values(" + codiceOrdine + ", "
+        + quantita + ", "
+        + nome + ", "
+        + costoSingolo + ", "
+        + tipologia+ ", "
+        + marca + ", "
+        + numeroVasca + ", "
+        + codiceSalone + ")";
     }
 }

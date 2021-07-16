@@ -27,4 +27,10 @@ public class Staff extends Persona{
     public void setRuolo(String ruolo) {
         this.ruolo = ruolo;
     }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "staff values(" + super.getCodiceFiscale() + "," + super.getNome() + ", " + super.getCognome() + ", "+ super.getDataNascita() + ", "
+                + super.getContatto() + ", " + super.getIndirizzo() + ","+ IDImpiegato + ", "+ ruolo+ ")";
+    }
 }

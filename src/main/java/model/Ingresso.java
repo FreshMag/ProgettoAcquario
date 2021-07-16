@@ -3,19 +3,19 @@ package model;
 import java.time.Clock;
 import java.util.Date;
 
-public class Ingresso {
+public class Ingresso implements Insertable{
     private String codiceBiglietto;
-    private Date dataIngresso;
+    private String dataIngresso;
     private float prezzo;
     private int numeroPartecipanti;
-    private Date dataAcquisto;
+    private String dataAcquisto;
     private String nome;
-    private Date dataEvento;
-    private Clock orarioInizio;
+    private String dataEvento;
+    private String orarioInizio;
     private String codiceFiscale;
 
-    public Ingresso(String codiceBiglietto, Date dataIngresso, float prezzo, int numeroPartecipanti, Date dataAcquisto,
-                    String nome, Date dataEvento, Clock orarioInizio, String codiceFiscale) {
+    public Ingresso(String codiceBiglietto, String dataIngresso, float prezzo, int numeroPartecipanti, String dataAcquisto,
+                    String nome, String dataEvento, String orarioInizio, String codiceFiscale) {
         this.codiceBiglietto = codiceBiglietto;
         this.dataIngresso = dataIngresso;
         this.prezzo = prezzo;
@@ -35,11 +35,11 @@ public class Ingresso {
         this.codiceBiglietto = codiceBiglietto;
     }
 
-    public Date getDataIngresso() {
+    public String getDataIngresso() {
         return dataIngresso;
     }
 
-    public void setDataIngresso(Date dataIngresso) {
+    public void setDataIngresso(String dataIngresso) {
         this.dataIngresso = dataIngresso;
     }
 
@@ -59,11 +59,11 @@ public class Ingresso {
         this.numeroPartecipanti = numeroPartecipanti;
     }
 
-    public Date getDataAcquisto() {
+    public String getDataAcquisto() {
         return dataAcquisto;
     }
 
-    public void setDataAcquisto(Date dataAcquisto) {
+    public void setDataAcquisto(String dataAcquisto) {
         this.dataAcquisto = dataAcquisto;
     }
 
@@ -75,19 +75,19 @@ public class Ingresso {
         this.nome = nome;
     }
 
-    public Date getDataEvento() {
+    public String getDataEvento() {
         return dataEvento;
     }
 
-    public void setDataEvento(Date dataEvento) {
+    public void setDataEvento(String dataEvento) {
         this.dataEvento = dataEvento;
     }
 
-    public Clock getOrarioInizio() {
+    public String getOrarioInizio() {
         return orarioInizio;
     }
 
-    public void setOrarioInizio(Clock orarioInizio) {
+    public void setOrarioInizio(String orarioInizio) {
         this.orarioInizio = orarioInizio;
     }
 
@@ -97,5 +97,18 @@ public class Ingresso {
 
     public void setCodiceFiscale(String codiceFiscale) {
         this.codiceFiscale = codiceFiscale;
+    }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "ingresso values(" +  codiceBiglietto
+                + dataIngresso + ", "
+                + prezzo + ", "
+                + numeroPartecipanti + ", "
+                + dataAcquisto + ", "
+                + nome + ", "
+                + dataEvento + ", "
+                + orarioInizio + ", "
+                + codiceFiscale + ")";
     }
 }

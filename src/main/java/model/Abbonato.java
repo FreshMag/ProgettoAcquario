@@ -27,4 +27,10 @@ public class Abbonato extends Persona{
     public void setDataInizio(Date dataInizio) {
         this.dataInizio = dataInizio;
     }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "abbonato values(" + super.getCodiceFiscale() + "," + dataInizio.toString() + ", "+ super.getNome() + ", " + super.getCognome() + ", "+ super.getDataNascita() + ", "
+                + super.getContatto() + ", " + super.getIndirizzo() + ","+ abbonamento_Nome + ")";
+    }
 }

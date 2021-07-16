@@ -1,11 +1,14 @@
 package main;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import view.MainController;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,8 +21,9 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        Main.launch(args);
         //launch(args);
-    	DBSource source = new DBSource();
+    	/*DBSource source = new DBSource();
     	Connection connection = source.getMySQLConnection();
     	
     	/*String query2 ="insert into SETTORE values('codicesalone3')";
@@ -33,7 +37,7 @@ public class Main extends Application {
             System.out.println("Errore"+ e.getMessage());			
             e.printStackTrace();
     	}*/
-    	
+    	/*
     	String query = "Select * from ABBONATO";
     	PreparedStatement statement = null;
     	try {
@@ -60,18 +64,18 @@ public class Main extends Application {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-        }
+        }*/
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-    	Parent root = new Group();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/mainGui.fxml"));
         primaryStage.setScene(new Scene(root));
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        primaryStage.setX(bounds.getMinX());
-        primaryStage.setY(bounds.getMinY());
-        primaryStage.setMaximized(true);
+        //Screen screen = Screen.getPrimary();
+        //Rectangle2D bounds = screen.getVisualBounds();
+        //primaryStage.setX(bounds.getMinX());
+        //primaryStage.setY(bounds.getMinY());
+        //primaryStage.setMaximized(true);
         primaryStage.show();
     }
 }

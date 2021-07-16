@@ -1,6 +1,6 @@
 package model;
 
-public class Pianta {
+public class Pianta implements Insertable{
     private String codiceVegetale;
     private float pesoKg;
     private String nomeScientifico;
@@ -53,5 +53,14 @@ public class Pianta {
 
     public void setCodiceSalone(String codiceSalone) {
         this.codiceSalone = codiceSalone;
+    }
+
+    @Override
+    public String getAttributesForQuery() {
+        return "pianta values(" + codiceVegetale + ", "
+        + pesoKg + ", "
+        + nomeScientifico + ", "
+        + numeroVasca + ", "
+        + codiceSalone + ")";
     }
 }
