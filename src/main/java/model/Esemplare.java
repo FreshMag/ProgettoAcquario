@@ -1,22 +1,23 @@
 package model;
 
 public class Esemplare {
+	//IMPORTANTE: HO CAMBIATO SESSO IN STRING, PERCH� CHAR NON MI FUNZIONAVA//
     private String codiceEsemplare;
     private String luogoNascita;
-    private char sesso;
+    private String sesso;
     private float peso;
-    private float quantitàMangimeHg;
+    private float quantitaMangimeHg;
     private String nomeScientifico;
     private int numeroVasca;
     private String codiceSalone;
 
-    public Esemplare(String codiceEsemplare, String luogoNascita, char sesso, float peso,
-                     float quantitàMangimeHg, String nomeScientifico, int numeroVasca, String codiceSalone) {
+    public Esemplare(String codiceEsemplare, String luogoNascita, String sesso, float peso,
+                     float quantitaMangimeHg, String nomeScientifico, int numeroVasca, String codiceSalone) {
         this.codiceEsemplare = codiceEsemplare;
         this.luogoNascita = luogoNascita;
         this.sesso = sesso;
         this.peso = peso;
-        this.quantitàMangimeHg = quantitàMangimeHg;
+        this.quantitaMangimeHg = quantitaMangimeHg;
         this.nomeScientifico = nomeScientifico;
         this.numeroVasca = numeroVasca;
         this.codiceSalone = codiceSalone;
@@ -38,11 +39,11 @@ public class Esemplare {
         this.luogoNascita = luogoNascita;
     }
 
-    public char getSesso() {
+    public String getSesso() {
         return sesso;
     }
 
-    public void setSesso(char sesso) {
+    public void setSesso(String sesso) {
         this.sesso = sesso;
     }
 
@@ -54,12 +55,12 @@ public class Esemplare {
         this.peso = peso;
     }
 
-    public float getQuantitàMangimeHg() {
-        return quantitàMangimeHg;
+    public float getQuantitaMangimeHg() {
+        return quantitaMangimeHg;
     }
 
-    public void setQuantitàMangimeHg(float quantitàMangimeHg) {
-        this.quantitàMangimeHg = quantitàMangimeHg;
+    public void setQuantitaMangimeHg(float quantitaMangimeHg) {
+        this.quantitaMangimeHg = quantitaMangimeHg;
     }
 
     public String getNomeScientifico() {
@@ -85,4 +86,12 @@ public class Esemplare {
     public void setCodiceSalone(String codiceSalone) {
         this.codiceSalone = codiceSalone;
     }
+
+    /**
+     * Metodo per ottenere la stringa che mi dica tutti gli attributi da inserire nella query 
+     * @return null
+     */
+	public String getAttributesForQuery() {
+		return new String("values(" + ")");
+	}
 }
