@@ -2,6 +2,22 @@ main/Controller.java
  main.Controller
 main/DBSource.java
  main.DBSource
+model/Esemplare.java
+ model.Esemplare
+model/Pianta.java
+ model.Pianta
+model/Staff.java
+ model.Staff
+model/Persona.java
+ model.Persona
+model/Ingresso.java
+ model.Ingresso
+model/Evento.java
+ model.Evento
+model/Abbonato.java
+ model.Abbonato
+model/Risorsa.java
+ model.Risorsa
 main/Main.java
  main.Main
 main/Launch.java

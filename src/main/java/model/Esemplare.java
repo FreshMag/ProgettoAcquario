@@ -1,7 +1,7 @@
 package model;
 
 public class Esemplare {
-	//IMPORTANTE: HO CAMBIATO SESSO IN STRING, PERCHè CHAR NON MI FUNZIONAVA//
+	//IMPORTANTE: HO CAMBIATO SESSO IN STRING, PERCHE CHAR NON MI FUNZIONAVA//
     private String codiceEsemplare;
     private String luogoNascita;
     private String sesso;

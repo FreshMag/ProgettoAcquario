@@ -14,7 +14,7 @@ public class Controller {
 	
 	/**
 	 * Da valutare: 
-	 * 1. passare i dati in input ai metodi, che verranno chiamanti in un main, facedo lì la gestione dell'input.
+	 * 1. passare i dati in input ai metodi, che verranno chiamanti in un main, facendo li la gestione dell'input.
 	 * 2. creare interfaccia per il model con metodi comuni a tutti
 	 * 3. creazione di uno statement generico, il quale viene modificato solo all'interno dei metodi e poi ripassato una volta completato, e messo infinne a null per resettarlo.
 	 */

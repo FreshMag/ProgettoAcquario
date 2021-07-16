@@ -35,7 +35,7 @@ public class Main extends Application {
     	}*/
     	
     	
-    	String query = "Select * from SETTORE";
+    	String query = "Select * from ABBONATO";
     	PreparedStatement statement = null;
     	try {
 			statement = connection.prepareStatement(query);
