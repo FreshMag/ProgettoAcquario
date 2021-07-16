@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #6EA9D4;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox alignment="CENTER" prefHeight="299.0" prefWidth="565.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField prefWidth="629.0" promptText="Inserisci nome utente" />
+            <PasswordField promptText="Inserisci password" />
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <VBox alignment="CENTER" prefHeight="139.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="TOP_CENTER" text="ACCEDI" textAlignment="CENTER" textFill="#222ed6a9">
+               <font>
+                  <Font name="Arial" size="46.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <VBox prefHeight="261.0" prefWidth="125.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>
