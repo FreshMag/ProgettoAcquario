@@ -204,7 +204,8 @@ public class MainController {
     public void newManutenzione() {}
     @FXML
     public void printMangime() {
-        Stage popUp = new Stage();
+        this.checkConnection();
+    	Stage popUp = new Stage();
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         GridPane pane = new GridPane();

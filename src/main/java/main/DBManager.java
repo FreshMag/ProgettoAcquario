@@ -97,9 +97,16 @@ public class DBManager {
 		//String insertManut = " "; // finire
 	//}
 	
+	/**
+	 * da fixare:)
+	 * @param numeroVasca
+	 * @param codiceSalone
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Risorsa> viewMangimeRichiestoVasca(int numeroVasca, String codiceSalone) throws SQLException {
 		PreparedStatement statement = null;
-		String query = "select * from vasca where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone  ; //finire
+		String query = "select * from risorsa where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone  ; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Risorsa> output = new ArrayList<>();
