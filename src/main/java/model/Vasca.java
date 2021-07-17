@@ -19,12 +19,12 @@ public class Vasca implements Insertable{
 
     @Override
     public String getAttributesForQuery() {
-        return "vasca values ("+ numeroVasca + ","
-        + codiceSalone + ","
-        + dimensione + ","
-        + posizione + ","
-        + aperta + ","
-        + nome + ")";
+        return "vasca values ("+ numeroVasca + ",\'"
+        + codiceSalone + "\',"
+        + dimensione + ",\'"
+        + posizione + "\',"
+        + aperta + ",\'"
+        + nome + "\')";
     }
 
     public int getNumeroVasca() {

@@ -87,13 +87,13 @@ public class Risorsa implements Insertable{
 
     @Override
     public String getAttributesForQuery() {
-        return "risorsa values(" + codiceOrdine + ", "
-        + quantita + ", "
-        + nome + ", "
-        + costoSingolo + ", "
-        + tipologia+ ", "
-        + marca + ", "
-        + numeroVasca + ", "
-        + codiceSalone + ")";
+        return "risorsa values(\'" + codiceOrdine + "\', "
+        + quantita + ",\' "
+        + nome + "\', "
+        + costoSingolo + ",\' "
+        + tipologia+ "\',\' "
+        + marca + "\', "
+        + numeroVasca + ",\' "
+        + codiceSalone + "\')";
     }
 }
