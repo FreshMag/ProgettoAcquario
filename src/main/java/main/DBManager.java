@@ -102,17 +102,14 @@ public class DBManager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<Risorsa> viewMangimeRichiestoVasca(int numeroVasca, String codiceSalone) throws SQLException {
+	public float viewMangimeRichiestoVasca(int numeroVasca, String codiceSalone) throws SQLException {
 		PreparedStatement statement = null;
-		String query = "select * from risorsa where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone  ; //finire
+		String query = "select sum(QuantitaMangimeHg) from esemplare where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone + "" ; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
-		List<Risorsa> output = new ArrayList<>();
-		while(result.next()) {
-			Risorsa risorsa = new Risorsa(result.getString("CodiceOrdine"), result.getInt("Quantita"),
-					result.getString("Nome"),result.getFloat("CostoSingolo"),result.getString("Tipologia"),
-					result.getString("Marca"), result.getInt("NumeroVasca"), result.getString("CodiceSalone"));
-			output.add(risorsa);
+		float output = 0;
+		if(result.next()) {
+			output = result.getFloat(1);
 		}
 		if (statement != null)
 			statement.close();
@@ -170,6 +167,78 @@ public class DBManager {
 					result.getString("Nome"),result.getFloat("CostoSingolo"),result.getString("Tipologia"),
 					result.getString("Marca"), result.getInt("NumeroVasca"), result.getString("CodiceSalone"));
 			output.add(risorsa);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
+
+	public List<Staff> viewImpiegati() throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from impiegato"; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Staff> output = new ArrayList<>();
+		while(result.next()) {
+			Staff staff = new Staff(result.getString(0),result.getString(1),result.getString(2), result.getDate(3).toString(),
+					result.getString(4), result.getString(5), result.getString(6), result.getString(7) );
+			output.add(staff);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
+
+	public List<Vasca> viewVasche() throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from vasca"; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Vasca> output = new ArrayList<>();
+		while(result.next()) {
+			Vasca vasca = new Vasca(result.getInt(0), result.getString(1), result.getFloat(2), result.getString(3),
+					result.getBoolean(4), result.getString(5));
+			output.add(vasca);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
+
+	public List<Esemplare> viewEsemplari() throws SQLException{
+		PreparedStatement statement = null;
+		String query = "select * from esemplare"; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Esemplare> output = new ArrayList<>();
+		while(result.next()) {
+			Esemplare esempl = new Esemplare(result.getString(0), result.getString(1), result.getString(2), result.getFloat(4),
+					result.getFloat(5), result.getString(6), result.getInt(7), result.getString(8));
+			output.add(esempl);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
+
+	public List<Pianta> viewPiante() throws SQLException {
+		PreparedStatement statement = null;
+		String query = "select * from pianta"; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Pianta> output = new ArrayList<>();
+		while(result.next()) {
+			Pianta pianta = new Pianta(result.getString(0), result.getFloat(1), result.getString(2), result.getInt(3),
+					result.getString(4));
+			output.add(pianta);
 		}
 		if (statement != null)
 			statement.close();

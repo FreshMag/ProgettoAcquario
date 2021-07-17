@@ -183,8 +183,6 @@ public class MainController {
         });
     }
     @FXML
-    public void newStaffEvento() {}
-    @FXML
     public void newImpiegato() {
         checkConnection();
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
@@ -201,26 +199,116 @@ public class MainController {
         });
     }
     @FXML
-    public void newManutenzione() {}
-    @FXML
     public void printMangime() {
         this.checkConnection();
-    	Stage popUp = new Stage();
+        Stage popUp = new Stage();
         popUp.setResizable(false);
-        BorderPane anchor = new BorderPane();
         GridPane pane = new GridPane();
         Label name1 = new Label("Numero vasca");
         Label name2 = new Label("CodiceSalone");
         TextField field1 = new TextField();
         TextField field2 = new TextField();
         Button launchQ = new Button("Visualizza Risultati");
+        Label resultLbl = new Label();
         pane.add(name1, 0,0);
         pane.add(name2, 0,1);
         pane.add(field1,1,0);
         pane.add(field2,1,1);
         pane.add(launchQ,0,2);
-        anchor.setTop(pane);
+        pane.add(resultLbl,1,2);
+        launchQ.setOnAction(e -> {
+            try {
+                resultLbl.setText(String.valueOf(db.viewMangimeRichiestoVasca(Integer.parseInt(field1.getText()), field2.getText())));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
+        popUp.show();
+    }
+    @FXML
+    public void printRecentEntries() {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Ingresso> table = new TableView<Ingresso>();
+        TableColumn<Ingresso, String> codBiglCol = new TableColumn<Ingresso, String>("Codice Biglietto");
+        codBiglCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("codiceBiglietto"));
+        TableColumn<Ingresso, String> dataIngrCol = new TableColumn<Ingresso, String>("Data Ingresso");
+        dataIngrCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("dataIngresso"));
+        TableColumn<Ingresso, Float> prezzoCol = new TableColumn<Ingresso, Float>("Prezzo");
+        prezzoCol.setCellValueFactory(new PropertyValueFactory<Ingresso, Float>("prezzo"));
+        TableColumn<Ingresso, Integer> numParCol = new TableColumn<Ingresso, Integer>("Numero Partecipanti");
+        numParCol.setCellValueFactory(new PropertyValueFactory<Ingresso, Integer>("numeroPartecipanti"));
+        TableColumn<Ingresso, String> dataAcquCol = new TableColumn<Ingresso, String>("Data Acquisto");
+        dataAcquCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("dataAcquisto"));
+        TableColumn<Ingresso, String> nomeCol = new TableColumn<Ingresso, String>("Nome");
+        nomeCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("nome"));
+        TableColumn<Ingresso, String> dataEvenCol = new TableColumn<Ingresso, String>("Data Evento");
+        dataEvenCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("dataEvento"));
+        TableColumn<Ingresso, String> oraInizCol = new TableColumn<Ingresso, String>("Orario Inizio");
+        oraInizCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("orarioInizio"));
+        TableColumn<Ingresso, String> codFiscCol = new TableColumn<Ingresso, String>("Codice Fiscale");
+        oraInizCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("codiceFiscale"));
 
+        table.getColumns().add(codBiglCol);
+        table.getColumns().add(dataIngrCol);
+        table.getColumns().add(prezzoCol);
+        table.getColumns().add(numParCol);
+        table.getColumns().add(dataAcquCol);
+        table.getColumns().add(nomeCol);
+        table.getColumns().add(dataEvenCol);
+        table.getColumns().add(oraInizCol);
+        table.getColumns().add(codFiscCol);
+        try {
+            table.getItems().addAll(db.viewIngressiRecenti());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+    }
+    @FXML
+    public void printToday() {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Evento> table = new TableView<Evento>();
+        TableColumn<Evento, String> dataEveCol = new TableColumn<Evento, String>("Data Evento");
+        dataEveCol.setCellValueFactory(new PropertyValueFactory<Evento, String>("dataEvento"));
+        TableColumn<Evento, String> nomeCol = new TableColumn<Evento, String>("Nome");
+        nomeCol.setCellValueFactory(new PropertyValueFactory<Evento, String>("nome"));
+        TableColumn<Evento, String> oraInizCol = new TableColumn<Evento, String>("Orario Inizio");
+        oraInizCol.setCellValueFactory(new PropertyValueFactory<Evento, String>("orarioInizio"));
+        TableColumn<Evento, String> oraFineCol = new TableColumn<Evento, String>("Orario Fine");
+        oraFineCol.setCellValueFactory(new PropertyValueFactory<Evento, String>("orarioFine"));
+        TableColumn<Evento, String> codFiscCol = new TableColumn<Evento, String>("Codice Fiscale");
+        codFiscCol.setCellValueFactory(new PropertyValueFactory<Evento, String>("codiceFiscale"));
+
+        table.getColumns().add(dataEveCol);
+        table.getColumns().add(nomeCol);
+        table.getColumns().add(oraInizCol);
+        table.getColumns().add(oraFineCol);
+        table.getColumns().add(codFiscCol);
+        try {
+            table.getItems().addAll(db.viewEventiOggi());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+    }
+    @FXML
+    public void printInventory() {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
         TableView<Risorsa> table = new TableView<Risorsa>();
         TableColumn<Risorsa, String> codOrdCol = new TableColumn<Risorsa, String>("Codice Ordine");
         codOrdCol.setCellValueFactory(new PropertyValueFactory<Risorsa, String>("codiceOrdine"));
@@ -247,32 +335,96 @@ public class MainController {
         table.getColumns().add(marcaCol);
         table.getColumns().add(numVasCol);
         table.getColumns().add(codSalCol);
-
-        launchQ.setOnAction(e -> {
-            try {
-                for (Risorsa r : db.viewMangimeRichiestoVasca(Integer.parseInt(field1.getText()), field2.getText())) {
-                    table.getItems().add(r);
-                }
-            } catch (SQLException throwables) {
-                printError(throwables.getMessage());
-            }
-        });
+        try {
+            table.getItems().addAll(db.viewInventarioRisorse());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
         anchor.setBottom(table);
         popUp.setScene(new Scene(anchor));
         popUp.show();
     }
     @FXML
-    public void printRecentEntries() {}
+    public void printImpiegati() {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Staff> table = new TableView<Staff>();
+        TableColumn<Staff, String> codFiscCol = new TableColumn<Staff, String>("Codice Fiscale");
+        codFiscCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("codiceFiscale"));
+        TableColumn<Staff, String> nomeCol = new TableColumn<Staff, String>("Nome");
+        nomeCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("nome"));
+        TableColumn<Staff, String> cognCol = new TableColumn<Staff, String>("Cognome");
+        cognCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("cognome"));
+        TableColumn<Staff, String> dataNascCol = new TableColumn<Staff, String>("Data di nascita");
+        dataNascCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("dataNascita"));
+        TableColumn<Staff, String> contCol = new TableColumn<Staff, String>("Contatto");
+        contCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("contatto"));
+        TableColumn<Staff, String> indirCol = new TableColumn<Staff, String>("Indirizzo");
+        indirCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("indirizzo"));
+        TableColumn<Staff, String> idCol = new TableColumn<Staff, String>("ID Impiegato");
+        idCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("IDImpiegato"));
+        TableColumn<Staff, String> ruoloCol = new TableColumn<Staff, String>("Ruolo");
+        ruoloCol.setCellValueFactory(new PropertyValueFactory<Staff, String>("ruolo"));
+
+        table.getColumns().add(codFiscCol);
+        table.getColumns().add(nomeCol);
+        table.getColumns().add(cognCol);
+        table.getColumns().add(dataNascCol);
+        table.getColumns().add(contCol);
+        table.getColumns().add(indirCol);
+        table.getColumns().add(idCol);
+        table.getColumns().add(ruoloCol);
+
+        try {
+            table.getItems().addAll(db.viewImpiegati());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+    }
     @FXML
-    public void printToday() {}
-    @FXML
-    public void printInventory() {}
-    @FXML
-    public void printImpiegati() {}
-    @FXML
-    public void printEsemplari() {}
+    public void printVasche() {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Vasca> table = new TableView<Vasca>();
+        TableColumn<Vasca, Integer> numVasCol = new TableColumn<Vasca, Integer>("Numero Vasca");
+        numVasCol.setCellValueFactory(new PropertyValueFactory<Vasca, Integer>("numeroVasca"));
+        TableColumn<Vasca, String> codSalCol = new TableColumn<Vasca, String>("Codice Salone");
+        codSalCol.setCellValueFactory(new PropertyValueFactory<Vasca, String>("codiceSalone"));
+        TableColumn<Vasca, Float> dimCol = new TableColumn<Vasca, Float>("Dimensione");
+        dimCol.setCellValueFactory(new PropertyValueFactory<Vasca, Float>("dimensione"));
+        TableColumn<Vasca, String> posCol = new TableColumn<Vasca, String>("Posizione");
+        posCol.setCellValueFactory(new PropertyValueFactory<Vasca, String>("posizione"));
+        TableColumn<Vasca, Boolean> apertaCol = new TableColumn<Vasca, Boolean>("Aperta");
+        apertaCol.setCellValueFactory(new PropertyValueFactory<Vasca, Boolean>("aperta"));
+        TableColumn<Vasca, String> nomeCol = new TableColumn<Vasca, String>("Nome habitat");
+        nomeCol.setCellValueFactory(new PropertyValueFactory<Vasca, String>("nome"));
+
+
+        table.getColumns().add(numVasCol);
+        table.getColumns().add(codSalCol);
+        table.getColumns().add(dimCol);
+        table.getColumns().add(posCol);
+        table.getColumns().add(apertaCol);
+        table.getColumns().add(nomeCol);
+        try {
+            table.getItems().addAll(db.viewVasche());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+    }
 
 
 
