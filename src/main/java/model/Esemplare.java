@@ -96,18 +96,18 @@ public class Esemplare implements Insertable, Deletable{
      * @return null
      */
 	public String getAttributesForQuery() {
-	    return "esemplare values(" + codiceEsemplare + ", "
-        + luogoNascita + ", "
-        + sesso + ", "
+	    return "esemplare values(\'" + codiceEsemplare + "\', \'"
+        + luogoNascita + "\', \'"
+        + sesso + "\', "
         + peso + ", "
-        + quantitaMangimeHg + ", "
-        + nomeScientifico + ", "
-        + numeroVasca + ", "
-        + codiceSalone + ")";
+        + quantitaMangimeHg + ", \'"
+        + nomeScientifico + "\', "
+        + numeroVasca + ", \'"
+        + codiceSalone + "\')";
 	}
 
     @Override
     public String getStringForQuery() {
-        return "esemplare where CodiceEsemplare = " + codiceEsemplare;
+        return "esemplare where CodiceEsemplare = \'" + codiceEsemplare + "\'";
     }
 }

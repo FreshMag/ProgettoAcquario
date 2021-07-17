@@ -60,10 +60,10 @@ public class Evento implements Insertable{
 
     @Override
     public String getAttributesForQuery() {
-        return "evento values(" + dataEvento.toString() + ", "
-        + nome + ", "
-        + orarioInizio + ", "
-        + orarioFine + ", "
-        + codiceFiscale + ")";
+        return "evento values(\'" + dataEvento.toString() + "\', \'"
+        + nome + "\', \'"
+        + orarioInizio + "\', \'"
+        + orarioFine + "\', \'"
+        + codiceFiscale + "\')";
     }
 }

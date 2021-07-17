@@ -33,7 +33,7 @@ public class MainController {
         }
     }
     public void printError(String error) {
-        //TODO
+        System.out.print(error);
     }
     public List<Node> openInsertStation(List<String> attributes) {
         Stage popUp = new Stage();
@@ -220,7 +220,7 @@ public class MainController {
             try {
                 resultLbl.setText(String.valueOf(db.viewMangimeRichiestoVasca(Integer.parseInt(field1.getText()), field2.getText())));
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                printError(throwables.getMessage());
             }
         });
         popUp.show();

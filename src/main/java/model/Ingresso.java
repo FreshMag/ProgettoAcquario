@@ -101,14 +101,14 @@ public class Ingresso implements Insertable{
 
     @Override
     public String getAttributesForQuery() {
-        return "ingresso values(" +  codiceBiglietto
-                + dataIngresso + ", "
+        return "ingresso values(\'" +  codiceBiglietto + "\', \'"
+                + dataIngresso + "\', "
                 + prezzo + ", "
-                + numeroPartecipanti + ", "
-                + dataAcquisto + ", "
-                + nome + ", "
-                + dataEvento + ", "
-                + orarioInizio + ", "
-                + codiceFiscale + ")";
+                + numeroPartecipanti + ", \'"
+                + dataAcquisto + "\', \'"
+                + nome + "\', \'"
+                + dataEvento + "\', \'"
+                + orarioInizio + "\', \'"
+                + codiceFiscale + "\')";
     }
 }

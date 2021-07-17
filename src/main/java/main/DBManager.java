@@ -16,7 +16,7 @@ public class DBManager {
 
 	Connection connection = null;//source.getMySQLConnection();
 	public DBManager() throws SQLException {
-		connection = DBSource.getMySQLConnection();
+		//connection = DBSource.getMySQLConnection();
 	}
 	/**
 	 * Da valutare: 
@@ -26,7 +26,7 @@ public class DBManager {
 	 */
 	
 	public void insertNew(Insertable ins) throws SQLException {
-        
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null; 
 		
 		//System.out.println("Inserisici " + esemplare.getAttributesForQuery());
@@ -64,6 +64,7 @@ public class DBManager {
 	}
 
 	public void delete(Deletable dt) throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "delete from " + dt.getStringForQuery();
 		//try {
@@ -103,6 +104,7 @@ public class DBManager {
 	 * @throws SQLException
 	 */
 	public float viewMangimeRichiestoVasca(int numeroVasca, String codiceSalone) throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "select sum(QuantitaMangimeHg) from esemplare where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone + "" ; //finire
 		statement = connection.prepareStatement(query);
@@ -119,8 +121,9 @@ public class DBManager {
 	}
 	
 	public List<Ingresso> viewIngressiRecenti() throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select * from ingressi where DataIngresso between" + LocalDate.now().minusWeeks(1) + " and " + LocalDate.now(); //finire
+		String query = "select * from ingresso where DataIngresso between " + LocalDate.now().minusWeeks(1) + " and " + LocalDate.now(); //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Ingresso> output = new ArrayList<>();
@@ -139,6 +142,7 @@ public class DBManager {
 	}
 	
 	public List<Evento> viewEventiOggi() throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "select * from evento where DataEvento = " + LocalDate.now().toString(); //finire
 		statement = connection.prepareStatement(query);
@@ -157,6 +161,7 @@ public class DBManager {
 	}
 	
 	public List<Risorsa> viewInventarioRisorse() throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "select * from risorsa"; //finire
 		statement = connection.prepareStatement(query);
@@ -176,14 +181,15 @@ public class DBManager {
 	}
 
 	public List<Staff> viewImpiegati() throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select * from impiegato"; //finire
+		String query = "select * from staff"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Staff> output = new ArrayList<>();
 		while(result.next()) {
-			Staff staff = new Staff(result.getString(0),result.getString(1),result.getString(2), result.getDate(3).toString(),
-					result.getString(4), result.getString(5), result.getString(6), result.getString(7) );
+			Staff staff = new Staff(result.getString(1),result.getString(2),result.getString(3), result.getDate(4).toString(),
+					result.getString(5), result.getString(6), result.getString(7), result.getString(8) );
 			output.add(staff);
 		}
 		if (statement != null)
@@ -194,14 +200,15 @@ public class DBManager {
 	}
 
 	public List<Vasca> viewVasche() throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "select * from vasca"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Vasca> output = new ArrayList<>();
 		while(result.next()) {
-			Vasca vasca = new Vasca(result.getInt(0), result.getString(1), result.getFloat(2), result.getString(3),
-					result.getBoolean(4), result.getString(5));
+			Vasca vasca = new Vasca(result.getInt(1), result.getString(2), result.getFloat(3), result.getString(4),
+					result.getBoolean(5), result.getString(6));
 			output.add(vasca);
 		}
 		if (statement != null)
@@ -212,13 +219,14 @@ public class DBManager {
 	}
 
 	public List<Esemplare> viewEsemplari() throws SQLException{
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "select * from esemplare"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Esemplare> output = new ArrayList<>();
 		while(result.next()) {
-			Esemplare esempl = new Esemplare(result.getString(0), result.getString(1), result.getString(2), result.getFloat(4),
+			Esemplare esempl = new Esemplare(result.getString(1), result.getString(2), result.getString(3), result.getFloat(4),
 					result.getFloat(5), result.getString(6), result.getInt(7), result.getString(8));
 			output.add(esempl);
 		}
@@ -230,14 +238,15 @@ public class DBManager {
 	}
 
 	public List<Pianta> viewPiante() throws SQLException {
+		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
 		String query = "select * from pianta"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Pianta> output = new ArrayList<>();
 		while(result.next()) {
-			Pianta pianta = new Pianta(result.getString(0), result.getFloat(1), result.getString(2), result.getInt(3),
-					result.getString(4));
+			Pianta pianta = new Pianta(result.getString(1), result.getFloat(2), result.getString(3), result.getInt(4),
+					result.getString(5));
 			output.add(pianta);
 		}
 		if (statement != null)

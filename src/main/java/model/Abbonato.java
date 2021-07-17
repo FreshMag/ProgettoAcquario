@@ -30,7 +30,7 @@ public class Abbonato extends Persona{
 
     @Override
     public String getAttributesForQuery() {
-        return "abbonato values(" + super.getCodiceFiscale() + "," + dataInizio.toString() + ", "+ super.getNome() + ", " + super.getCognome() + ", "+ super.getDataNascita() + ", "
-                + super.getContatto() + ", " + super.getIndirizzo() + ","+ abbonamento_Nome + ")";
+        return "abbonato values(\'" + super.getCodiceFiscale() + "\',\'"+ dataInizio.toString() + "\', \'"+ super.getNome() + "\', \'" + super.getCognome() + "\', \'"+ super.getDataNascita() + "\', \'"
+                + super.getContatto() + "\', \'" + super.getIndirizzo() + "\',\'"+ abbonamento_Nome + "\')";
     }
 }

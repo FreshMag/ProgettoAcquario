@@ -61,15 +61,15 @@ public class Pianta implements Insertable, Deletable{
 
     @Override
     public String getAttributesForQuery() {
-        return "pianta values(" + codiceVegetale + ", "
-        + pesoKg + ", "
-        + nomeScientifico + ", "
-        + numeroVasca + ", "
-        + codiceSalone + ")";
+        return "pianta values(\'" + codiceVegetale + "\', "
+        + pesoKg + ", \'"
+        + nomeScientifico + "\', "
+        + numeroVasca + ", \'"
+        + codiceSalone + "\')";
     }
 
     @Override
     public String getStringForQuery() {
-        return "pianta where CodiceVegetale = " + codiceVegetale;
+        return "pianta where CodiceVegetale = \'" + codiceVegetale + "\'";
     }
 }
