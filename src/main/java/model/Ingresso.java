@@ -111,4 +111,9 @@ public class Ingresso implements Insertable{
                 + (orarioInizio.equals("null") ? "null," : "\'" + orarioInizio + "\',")
                 + (codiceFiscale.equals("null") ? "null);" : "\'" + codiceFiscale + "\');");
     }
+
+    @Override
+    public String getKey() {
+        return codiceBiglietto;
+    }
 }

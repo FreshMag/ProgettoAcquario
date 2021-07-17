@@ -66,4 +66,9 @@ public class Evento implements Insertable{
         + orarioFine + "\', \'"
         + codiceFiscale + "\');";
     }
+
+    @Override
+    public String getKey() {
+        return dataEvento.toString() + ","+ orarioInizio;
+    }
 }

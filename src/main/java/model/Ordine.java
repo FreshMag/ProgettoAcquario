@@ -19,6 +19,11 @@ public class Ordine implements Insertable{
                 + IDFornitore + "\');";
     }
 
+    @Override
+    public String getKey() {
+        return codiceOrdine;
+    }
+
     public String getCodiceOrdine() {
         return codiceOrdine;
     }

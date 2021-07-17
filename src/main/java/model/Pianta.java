@@ -69,6 +69,11 @@ public class Pianta implements Insertable, Deletable{
     }
 
     @Override
+    public String getKey() {
+        return codiceVegetale;
+    }
+
+    @Override
     public String getStringForQuery() {
         return "pianta where CodiceVegetale = \'" + codiceVegetale + "\'";
     }

@@ -12,8 +12,8 @@
    <center>
       <VBox alignment="CENTER" prefHeight="299.0" prefWidth="565.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="uriDB" prefWidth="629.0" promptText="Inserisci URI database" />
-            <TextField fx:id="nomeUtente" prefWidth="629.0" promptText="Inserisci nome utente" />
+            <TextField fx:id="uriDB" prefWidth="629.0" promptText="Inserisci URI database" text="localhost:3306/acquarium" />
+            <TextField fx:id="nomeUtente" prefWidth="629.0" promptText="Inserisci nome utente" text="root" />
             <PasswordField fx:id="password" promptText="Inserisci password" />
             <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accedi" text="Accedi" textFill="#222ed4c8">
                <font>

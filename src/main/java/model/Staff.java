@@ -33,4 +33,5 @@ public class Staff extends Persona{
         return "staff values(\'" + super.getCodiceFiscale() + "\',\'" + super.getNome() + "\',\' " + super.getCognome() + "\', \'"+ super.getDataNascita() + "\',\' "
                 + super.getContatto() + "\',\'" + super.getIndirizzo() + "\',\'"+ IDImpiegato + "\',\' "+ ruolo+ "\');";
     }
+
 }

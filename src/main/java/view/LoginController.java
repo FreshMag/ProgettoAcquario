@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import main.DBSource;
 
@@ -31,6 +32,8 @@ public class LoginController {
         try {
             Connection conn = DBSource.getMySQLConnection();
             Stage controlStage = new Stage();
+            controlStage.setTitle("Acquario di Cesena");
+            controlStage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/controlPanel.fxml"));
             controlStage.setScene(new Scene(root));
             controlStage.show();

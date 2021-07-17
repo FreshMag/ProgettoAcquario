@@ -106,7 +106,7 @@ public class DBManager {
 	public float viewMangimeRichiestoVasca(int numeroVasca, String codiceSalone) throws SQLException {
 		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select sum(QuantitaMangimeHg) from esemplare where NumeroVasca = " + numeroVasca + " AND CodiceSalone = "+ codiceSalone + "" ; //finire
+		String query = "select sum(QuantitàMangimeHg) from esemplare where NumeroVasca = " + numeroVasca + " AND CodiceSalone = \'"+ codiceSalone + "\'" ; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		float output = 0;
@@ -249,6 +249,49 @@ public class DBManager {
 			Pianta pianta = new Pianta(result.getString(1), result.getFloat(2), result.getString(3), result.getInt(4),
 					result.getString(5));
 			output.add(pianta);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
+
+	public List<List<String>> getDistinctKeysFrom(String tableName, List<String> keyNames) throws SQLException {
+		connection = DBSource.getMySQLConnection();
+		List<List<String>> output = new ArrayList<>();
+		for (int k = 0; k < keyNames.size(); k++) {
+			PreparedStatement statement = null;
+			String query = "select distinct " + keyNames.get(k)+ " from " + tableName; //finire
+			statement = connection.prepareStatement(query);
+			ResultSet result = statement.executeQuery();
+			List<String> key = new ArrayList<>();
+			while (result.next()) {
+				key.add(result.getString(keyNames.get(k)));
+			}
+			output.add(key);
+			if (statement != null)
+				statement.close();
+		}
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
+
+	public List<String> getKeysFrom(String tableName, List<String> keyNames) throws SQLException {
+		connection = DBSource.getMySQLConnection();
+		List<String> output = new ArrayList<>();
+		PreparedStatement statement = null;
+		String query = "select * from " + tableName; //finire
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+
+		while (result.next()) {
+			String key =  keyNames.get(0) + " : "  + result.getString(keyNames.get(0));
+			for (int i = 1; i < keyNames.size(); i++) {
+				key +=  ", " + keyNames.get(i) + " : "  + result.getString(keyNames.get(i));
+			}
+			output.add(key);
 		}
 		if (statement != null)
 			statement.close();

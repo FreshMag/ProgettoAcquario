@@ -27,6 +27,11 @@ public class Vasca implements Insertable{
         + nome + "\');";
     }
 
+    @Override
+    public String getKey() {
+        return numeroVasca + "," + codiceSalone;
+    }
+
     public int getNumeroVasca() {
         return numeroVasca;
     }

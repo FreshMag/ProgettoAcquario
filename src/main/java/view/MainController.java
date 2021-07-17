@@ -1,6 +1,7 @@
 package view;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,21 +9,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.DBManager;
 import model.*;
 
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainController {
     DBManager db = null;
-
+    @FXML
+    Label errorLbl;
     public void checkConnection() {
         if (db == null) {
             try {
@@ -32,23 +34,38 @@ public class MainController {
             }
         }
     }
-    public void printError(String error) {
-        System.out.print(error);
+    public String getValueStr(String s) {
+        return s == null || s.equals("")  || s.equals("null") ? "null" : s.substring(s.indexOf(":")+2);
     }
-    public List<Node> openInsertStation(List<String> attributes) {
+    public void printError(String error) {
+        errorLbl.setText(error);
+        System.out.println(error);
+    }
+    public List<Node> openInsertStation(List<String> attributes, List<Boolean> hasCombo, List<List<String>> comboValues) {
         Stage popUp = new Stage();
+        popUp.setTitle("Inserisci/Rimuovi nel Database");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         GridPane pane = new GridPane();
         List<Node> nodes = new ArrayList<>();
         Button b = new Button();
         nodes.add(b);
         int i = 0;
+        int j = 0;
         for (String attr : attributes) {
             Label fieldName = new Label(attr);
-            TextField fieldValue = new TextField();
-            nodes.add(fieldValue);
+            if (hasCombo.get(i)) {
+                ComboBox<String> combo = new ComboBox<>();
+                combo.getItems().addAll(comboValues.get(j));
+                nodes.add(combo);
+                pane.add(combo,1,i);
+                j++;
+            } else {
+                TextField fieldValue = new TextField();
+                nodes.add(fieldValue);
+                pane.add(fieldValue,1,i);
+            }
             pane.add(fieldName,0,i);
-            pane.add(fieldValue,1,i);
             i++;
         }
         b.setText("Inserisci");
@@ -61,15 +78,27 @@ public class MainController {
     public void newEsemplare() {
         checkConnection();
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("codiceEsemplare","luogoNascita","sesso","peso","quantitaMangimeHg","nomeScientifico","numeroVasca","codiceSalone"));
+        List<String> vasche = null;
+        List<String> specie = null;
+        try {
+            vasche = db.getKeysFrom("vasca", List.of("NumeroVasca", "CodiceSalone"));
+            specie = db.getKeysFrom("specie_animale", List.of("NomeScientifico"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        List<Node> l = openInsertStation(List.of("Codice Esemplare","Luogo Nascita","Sesso","Peso","Quantita Mangime Hg","Specie Animale","Vasca"),
+                List.of(false,false,false,false,false,true,true), List.of(specie, vasche));
         ((TextField)l.get(3)).setPromptText("M or F");
         ((Button)l.get(0)).setOnAction(e -> {
+            String res = ((String)((ComboBox)l.get(7)).getValue());
+            int numVasca = Integer.parseInt(res.substring(res.indexOf(":")+ 2, res.indexOf(",")));
+            String codSalone = res.substring(res.lastIndexOf(":")+2);
+            String specieAni = ((String)((ComboBox)l.get(6)).getValue());
             Esemplare es = new Esemplare(((TextField)l.get(1)).getText(),((TextField)l.get(2)).getText(),((TextField)l.get(3)).getText(),Float.parseFloat(((TextField)l.get(4)).getText()),
-                    Float.parseFloat(((TextField)l.get(5)).getText()), ((TextField)l.get(6)).getText(), Integer.parseInt(((TextField)l.get(7)).getText()), ((TextField)l.get(8)).getText());
-            System.out.println(es.getLuogoNascita());
+                    Float.parseFloat(((TextField)l.get(5)).getText()), getValueStr(specieAni) , numVasca, codSalone);
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -78,13 +107,26 @@ public class MainController {
     public void newPianta() {
         checkConnection();
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("codiceVegetale","pesoKg","nomeScientifico","numeroVasca","codiceSalone"));
+        List<String> vasche = null;
+        List<String> specie = null;
+        try {
+            vasche = db.getKeysFrom("vasca", List.of("NumeroVasca", "CodiceSalone"));
+            specie = db.getKeysFrom("specie_vegetale", List.of("NomeScientifico"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        List<Node> l = openInsertStation(List.of("Codice Vegetale","Peso Kg","Specie Vegetale","Vasca"),
+                List.of(false,false,true,true),List.of(specie,vasche));
         ((Button)l.get(0)).setOnAction(e -> {
+            String res = ((String)((ComboBox)l.get(4)).getValue());
+            int numVasca = Integer.parseInt(res.substring(res.indexOf(":")+ 2, res.indexOf(",")));
+            String codSalone = res.substring(res.lastIndexOf(":")+2);
+            String specieVeg = ((String)((ComboBox)l.get(3)).getValue());
             Pianta es = new Pianta(((TextField)l.get(1)).getText(),Float.parseFloat(((TextField)l.get(2)).getText()),
-                    ((TextField)l.get(3)).getText(), Integer.parseInt(((TextField)l.get(4)).getText()), ((TextField)l.get(5)).getText());
+                    getValueStr(specieVeg),numVasca, codSalone);
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -93,13 +135,20 @@ public class MainController {
     public void newOrdine() {
         checkConnection();
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("codiceOrdine", "dataOrdine", "IDFornitore"));
+        List<String> fornitori = null;
+        try {
+            fornitori = db.getKeysFrom("fornitore", List.of("IDImpiegato"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        List<Node> l = openInsertStation(List.of("Codice Ordine", "Data Ordine", "ID Fornitore"), List.of(false,false,true),List.of(fornitori));
         ((Button)l.get(0)).setOnAction(e -> {
+            String fornitore = ((String)((ComboBox)l.get(3)).getValue());
             Ordine es = new Ordine(((TextField)l.get(1)).getText(),((TextField)l.get(2)).getText(),
-                    ((TextField)l.get(3)).getText());
+                    getValueStr(fornitore));
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -107,15 +156,26 @@ public class MainController {
     @FXML
     public void newVasca() {
         checkConnection();
+        List<String> saloni = null;
+        List<String> habitat = null;
+        try {
+            saloni = db.getKeysFrom("salone", List.of("CodiceSalone"));
+            habitat = db.getKeysFrom("habitat", List.of("Nome"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("numeroVasca", "codiceSalone", "dimensione","posizione", "aperta", "nome"));
+        List<Node> l = openInsertStation(List.of("numeroVasca", "codiceSalone", "dimensione","posizione", "aperta", "nome"), List.of(false, true,false,false,false,true),
+                List.of(saloni, habitat));
         ((Button)l.get(0)).setOnAction(e -> {
-            Vasca es = new Vasca(Integer.parseInt(((TextField)l.get(1)).getText()),((TextField)l.get(2)).getText(),
+            String salone = ((String)((ComboBox)l.get(2)).getValue());
+            String hab = ((String)((ComboBox)l.get(6)).getValue());
+            Vasca es = new Vasca(Integer.parseInt(((TextField)l.get(1)).getText()),getValueStr(salone),
             Float.parseFloat(((TextField)l.get(3)).getText()), ((TextField)l.get(4)).getText(), Boolean.parseBoolean(((TextField)l.get(5)).getText()),
-                    ((TextField)l.get(6)).getText());
+                    getValueStr(hab));
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -124,14 +184,32 @@ public class MainController {
     public void newIngresso() {
         checkConnection();
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("codiceBiglietto","dataIngresso","prezzo","numeroPartecipanti", "dataAcquisto", "nome", "dataEvento", "orarioInizio","codiceFiscale"));
+        List<String> tipo_biglietti = null;
+        List<String> eventi = null;
+        List<String> abbonati = null;
+        try {
+            tipo_biglietti = db.getKeysFrom("tipo_biglietto", List.of("Nome"));
+            eventi = db.getKeysFrom("evento", List.of("DataEvento", "OrarioInizio"));
+            abbonati = db.getKeysFrom("abbonato", List.of("CodiceFiscale"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        List<Node> l = openInsertStation(List.of("Codice Biglietto","Data Ingresso","Prezzo","Numero Partecipanti", "Data Acquisto", "Tipo Biglietto", "Evento", "Nome Abbonato"),
+                List.of(false,false,false,false,false,true,true,true),List.of(tipo_biglietti,eventi,abbonati));
         ((Button)l.get(0)).setOnAction(e -> {
+            String res = ((String)((ComboBox)l.get(7)).getValue());
+            String dataEve = res == null || res.equals("") ? "null" : res.substring(res.indexOf(":")+ 2, res.indexOf(","));
+            String oraInizio = res == null || res.equals("") ? "null" : res.substring(res.indexOf(",")+ 17);
+            String tipo = ((String)((ComboBox)l.get(6)).getValue());
+            String nomeAbbo = ((String)((ComboBox)l.get(8)).getValue());
+            System.out.println(dataEve);
+            System.out.println(oraInizio);
             Ingresso es = new Ingresso(((TextField)l.get(1)).getText(),((TextField)l.get(2)).getText(),
                     Float.parseFloat(((TextField)l.get(3)).getText()), Integer.parseInt(((TextField)l.get(4)).getText()), ((TextField)l.get(5)).getText(),
-                    ((TextField)l.get(6)).getText(), ((TextField)l.get(7)).getText(), ((TextField)l.get(8)).getText(), ((TextField)l.get(9)).getText());
+                    getValueStr(tipo), dataEve, oraInizio, getValueStr(nomeAbbo));
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -139,15 +217,23 @@ public class MainController {
     @FXML
     public void newAbbonato() {
         checkConnection();
+        List<String> tipi_abbo = null;
+        try {
+            tipi_abbo = db.getKeysFrom("tipo_abbonamento", List.of("Nome"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("codiceFiscale", "nome", "cognome", "dataNascita", "contatto", "indirizzo","abbonamento_Nome", "dataInizio"));
+        List<Node> l = openInsertStation(List.of("Codice Fiscale", "Nome", "Cognome", "Data Nascita", "Contatto", "Indirizzo","Tipo Abbonamento", "Data Inizio"),
+                List.of(false, false, false, false,false,false,true, false),List.of(tipi_abbo));
         ((Button)l.get(0)).setOnAction(e -> {
+            String nomeAbbo = ((String)((ComboBox)l.get(7)).getValue());
             Abbonato es = new Abbonato(((TextField)l.get(1)).getText(),((TextField)l.get(2)).getText(),
                     ((TextField)l.get(3)).getText(), ((TextField)l.get(4)).getText(), ((TextField)l.get(5)).getText(),
-                    ((TextField)l.get(6)).getText(), ((TextField)l.get(7)).getText(), ((TextField)l.get(8)).getText());
+                    ((TextField)l.get(6)).getText(), getValueStr(nomeAbbo), ((TextField)l.get(8)).getText());
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -155,14 +241,21 @@ public class MainController {
     @FXML
     public void deleteEsemplare() {
         checkConnection();
+        List<String> esemplari = null;
+        try {
+            esemplari = db.getKeysFrom("esemplare", List.of("CodiceEsemplare"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("Codice Esemplare"));
+        List<Node> l = openInsertStation(List.of("Codice Esemplare"),  List.of(true), List.of(esemplari));
         Button b = ((Button)l.get(0));
         b.setText("Elimina");
         b.setOnAction(e -> {
             try {
-                db.delete(new Esemplare(((TextField)l.get(1)).getText()));
-            } catch (SQLException throwables) {
+                String codEse = ((String)((ComboBox)l.get(1)).getValue());
+                db.delete(new Esemplare(getValueStr(codEse)));
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -170,14 +263,21 @@ public class MainController {
     @FXML
     public void deletePianta() {
         checkConnection();
+        List<String> piante = null;
+        try {
+            piante = db.getKeysFrom("pianta", List.of("CodiceVegetale"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("Codice Vegetale"));
+        List<Node> l = openInsertStation(List.of("Codice Vegetale"),  List.of(true), List.of(piante));
         Button b = ((Button)l.get(0));
         b.setText("Elimina");
         b.setOnAction(e -> {
             try {
-                db.delete(new Pianta(((TextField)l.get(1)).getText()));
-            } catch (SQLException throwables) {
+                String codVeg = ((String)((ComboBox)l.get(1)).getValue());
+                db.delete(new Pianta(getValueStr(codVeg)));
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -186,14 +286,15 @@ public class MainController {
     public void newImpiegato() {
         checkConnection();
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
-        List<Node> l = openInsertStation(List.of("codiceFiscale", "nome", "cognome", "dataNascita", "contatto", "indirizzo","IDImpiegato", "Ruolo"));
+        List<Node> l = openInsertStation(List.of("codiceFiscale", "nome", "cognome", "dataNascita", "contatto", "indirizzo","IDImpiegato", "Ruolo"),
+                null,null);
         ((Button)l.get(0)).setOnAction(e -> {
             Staff es = new Staff(((TextField)l.get(1)).getText(),((TextField)l.get(2)).getText(),
                     ((TextField)l.get(3)).getText(), ((TextField)l.get(4)).getText(), ((TextField)l.get(5)).getText(),
                     ((TextField)l.get(6)).getText(), ((TextField)l.get(7)).getText(), ((TextField)l.get(8)).getText());
             try {
                 db.insertNew(es);
-            } catch (SQLException throwables) {
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
@@ -202,33 +303,50 @@ public class MainController {
     public void printMangime() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza il mangime richiesto dagli esemplari di una vasca");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         GridPane pane = new GridPane();
-        Label name1 = new Label("Numero vasca");
-        Label name2 = new Label("CodiceSalone");
-        TextField field1 = new TextField();
-        TextField field2 = new TextField();
+        Label name1 = new Label("Vasca");
+        VBox boxVasca = new VBox();
+        boxVasca.getChildren().add(name1);
+        boxVasca.setAlignment(Pos.CENTER);
+        List<String> vasche = null;
+        try {
+            vasche = db.getKeysFrom("vasca", List.of("NumeroVasca", "CodiceSalone"));
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        ComboBox<String> combobox = new ComboBox<>();
+        combobox.getItems().addAll(vasche);
         Button launchQ = new Button("Visualizza Risultati");
+        VBox box = new VBox();
         Label resultLbl = new Label();
-        pane.add(name1, 0,0);
-        pane.add(name2, 0,1);
-        pane.add(field1,1,0);
-        pane.add(field2,1,1);
-        pane.add(launchQ,0,2);
-        pane.add(resultLbl,1,2);
+        box.getChildren().add(resultLbl);
+        box.setAlignment(Pos.CENTER);
+        pane.add(boxVasca, 0,0);
+        pane.add(combobox,1,0);
+        pane.add(launchQ,0,1);
+        pane.add(box,1,1);
         launchQ.setOnAction(e -> {
             try {
-                resultLbl.setText(String.valueOf(db.viewMangimeRichiestoVasca(Integer.parseInt(field1.getText()), field2.getText())));
-            } catch (SQLException throwables) {
+                String res = combobox.getValue();
+                int numVasca = Integer.parseInt(res.substring(res.indexOf(":")+ 2, res.indexOf(",")));
+                String codSalone = res.substring(res.lastIndexOf(":")+2);
+                resultLbl.setText(String.valueOf(db.viewMangimeRichiestoVasca(numVasca, codSalone)));
+            } catch (Exception throwables) {
                 printError(throwables.getMessage());
             }
         });
+        popUp.setScene(new Scene(pane));
         popUp.show();
     }
     @FXML
     public void printRecentEntries() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza Ingressi dell'ultima settimana");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Ingresso> table = new TableView<Ingresso>();
@@ -262,7 +380,7 @@ public class MainController {
         table.getColumns().add(codFiscCol);
         try {
             table.getItems().addAll(db.viewIngressiRecenti());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -274,6 +392,8 @@ public class MainController {
     public void printToday() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza eventi programmati per oggi");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Evento> table = new TableView<Evento>();
@@ -295,7 +415,7 @@ public class MainController {
         table.getColumns().add(codFiscCol);
         try {
             table.getItems().addAll(db.viewEventiOggi());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -307,6 +427,8 @@ public class MainController {
     public void printInventory() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza inventario");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Risorsa> table = new TableView<Risorsa>();
@@ -337,7 +459,7 @@ public class MainController {
         table.getColumns().add(codSalCol);
         try {
             table.getItems().addAll(db.viewInventarioRisorse());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -349,6 +471,8 @@ public class MainController {
     public void printImpiegati() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza impiegati");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Staff> table = new TableView<Staff>();
@@ -380,7 +504,7 @@ public class MainController {
 
         try {
             table.getItems().addAll(db.viewImpiegati());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -392,6 +516,8 @@ public class MainController {
     public void printVasche() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza le vasche");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Vasca> table = new TableView<Vasca>();
@@ -417,7 +543,7 @@ public class MainController {
         table.getColumns().add(nomeCol);
         try {
             table.getItems().addAll(db.viewVasche());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -430,6 +556,8 @@ public class MainController {
     public void printEsemplari() {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza esemplari dell'acquario");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Esemplare> table = new TableView<Esemplare>();
@@ -460,7 +588,7 @@ public class MainController {
         table.getColumns().add(codSalCol);
         try {
             table.getItems().addAll(db.viewEsemplari());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -473,6 +601,8 @@ public class MainController {
     public void printPiante () {
         this.checkConnection();
         Stage popUp = new Stage();
+        popUp.setTitle("Visualizza piante dell'acquario");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
         popUp.setResizable(false);
         BorderPane anchor = new BorderPane();
         TableView<Pianta> table = new TableView<Pianta>();
@@ -494,7 +624,7 @@ public class MainController {
         table.getColumns().add(codSalCol);
         try {
             table.getItems().addAll(db.viewPiante());
-        } catch (SQLException throwables) {
+        } catch (Exception throwables) {
             printError(throwables.getMessage());
         }
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -502,19 +632,4 @@ public class MainController {
         popUp.setScene(new Scene(anchor));
         popUp.show();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
