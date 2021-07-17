@@ -123,7 +123,8 @@ public class DBManager {
 	public List<Ingresso> viewIngressiRecenti() throws SQLException {
 		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select * from ingresso where DataIngresso between " + LocalDate.now().minusWeeks(1) + " and " + LocalDate.now(); //finire
+		System.out.println(LocalDate.now().minusWeeks(1));
+		String query = "select * from ingresso where DataIngresso between \'" + LocalDate.now().minusWeeks(1) + "\' and \'" + LocalDate.now() + "\'"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Ingresso> output = new ArrayList<>();
@@ -144,7 +145,7 @@ public class DBManager {
 	public List<Evento> viewEventiOggi() throws SQLException {
 		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select * from evento where DataEvento = " + LocalDate.now().toString(); //finire
+		String query = "select * from evento where DataEvento = \'" + LocalDate.now() + "\'"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
 		List<Evento> output = new ArrayList<>();
