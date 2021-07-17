@@ -249,7 +249,7 @@ public class MainController {
         TableColumn<Ingresso, String> oraInizCol = new TableColumn<Ingresso, String>("Orario Inizio");
         oraInizCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("orarioInizio"));
         TableColumn<Ingresso, String> codFiscCol = new TableColumn<Ingresso, String>("Codice Fiscale");
-        oraInizCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("codiceFiscale"));
+        codFiscCol.setCellValueFactory(new PropertyValueFactory<Ingresso, String>("codiceFiscale"));
 
         table.getColumns().add(codBiglCol);
         table.getColumns().add(dataIngrCol);

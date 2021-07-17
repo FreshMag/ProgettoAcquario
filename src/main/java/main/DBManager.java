@@ -123,7 +123,6 @@ public class DBManager {
 	public List<Ingresso> viewIngressiRecenti() throws SQLException {
 		connection = DBSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		System.out.println(LocalDate.now().minusWeeks(1));
 		String query = "select * from ingresso where DataIngresso between \'" + LocalDate.now().minusWeeks(1) + "\' and \'" + LocalDate.now() + "\'"; //finire
 		statement = connection.prepareStatement(query);
 		ResultSet result = statement.executeQuery();
@@ -131,8 +130,9 @@ public class DBManager {
 		while(result.next()) {
 			Ingresso e = new Ingresso(result.getString("CodiceBiglietto"), result.getDate("DataIngresso").toString(),
 					result.getFloat("Prezzo"), result.getInt("NumeroPartecipanti"), result.getDate("DataAcquisto").toString(),
-					result.getString("Nome"), result.getDate("DataEvento").toString(), result.getTimestamp("OrarioInizio").toString(),
-					result.getString("CodiceFiscale"));
+					result.getString("Nome"), result.getDate("DataEvento") == null ? "" : result.getDate("DataEvento").toString(),
+					result.getTimestamp("OrarioInizio") == null ? "" : result.getTimestamp("OrarioInizio").toString(),
+					result.getString("CodiceFiscale") == null ? "" : result.getString("CodiceFiscale"));
 			output.add(e);
 		}
 		if (statement != null)
