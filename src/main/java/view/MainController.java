@@ -426,6 +426,83 @@ public class MainController {
         popUp.show();
     }
 
+    @FXML
+    public void printEsemplari() {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Esemplare> table = new TableView<Esemplare>();
+        TableColumn<Esemplare, String> codEsemCol = new TableColumn<Esemplare, String>("Codice Esemplare");
+        codEsemCol.setCellValueFactory(new PropertyValueFactory<Esemplare, String>("codiceEsemplare"));
+        TableColumn<Esemplare, String> luoNascCol = new TableColumn<Esemplare, String>("Luogo Nascita");
+        luoNascCol.setCellValueFactory(new PropertyValueFactory<Esemplare, String>("luogoNascita"));
+        TableColumn<Esemplare, String> sessoCol = new TableColumn<Esemplare, String>("Sesso");
+        sessoCol.setCellValueFactory(new PropertyValueFactory<Esemplare, String>("sesso"));
+        TableColumn<Esemplare, Float> pesoCol = new TableColumn<Esemplare, Float>("Peso");
+        pesoCol.setCellValueFactory(new PropertyValueFactory<Esemplare, Float>("peso"));
+        TableColumn<Esemplare, Float> quantitaCol = new TableColumn<Esemplare, Float>("Quantita Mangime");
+        quantitaCol.setCellValueFactory(new PropertyValueFactory<Esemplare, Float>("quantitaMangimeHg"));
+        TableColumn<Esemplare, String> nomeScienCol = new TableColumn<Esemplare, String>("Nome Scientifico");
+        nomeScienCol.setCellValueFactory(new PropertyValueFactory<Esemplare, String>("nomeScientifico"));
+        TableColumn<Esemplare, Integer> numVasCol = new TableColumn<Esemplare, Integer>("Numero Vasca");
+        numVasCol.setCellValueFactory(new PropertyValueFactory<Esemplare, Integer>("numeroVasca"));
+        TableColumn<Esemplare, String> codSalCol = new TableColumn<Esemplare, String>("Codice Salone");
+        codSalCol.setCellValueFactory(new PropertyValueFactory<Esemplare, String>("codiceSalone"));
+
+        table.getColumns().add(codEsemCol);
+        table.getColumns().add(luoNascCol);
+        table.getColumns().add(sessoCol);
+        table.getColumns().add(pesoCol);
+        table.getColumns().add(quantitaCol);
+        table.getColumns().add(nomeScienCol);
+        table.getColumns().add(numVasCol);
+        table.getColumns().add(codSalCol);
+        try {
+            table.getItems().addAll(db.viewEsemplari());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+    }
+
+    @FXML
+    public void printPiante () {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Pianta> table = new TableView<Pianta>();
+        TableColumn<Pianta, String> codVegCol = new TableColumn<Pianta, String>("Codice Vegetale");
+        codVegCol.setCellValueFactory(new PropertyValueFactory<Pianta, String>("codiceVegetale"));
+        TableColumn<Pianta, Float> pesoCol = new TableColumn<Pianta, Float>("Peso KG");
+        pesoCol.setCellValueFactory(new PropertyValueFactory<Pianta, Float>("pesoKg"));
+        TableColumn<Pianta, String> nomeScieCol = new TableColumn<Pianta, String>("Nome Scientifico");
+        nomeScieCol.setCellValueFactory(new PropertyValueFactory<Pianta, String>("nomeScientifico"));
+        TableColumn<Pianta, Integer> numVasCol = new TableColumn<Pianta, Integer>("Numero Vasca");
+        numVasCol.setCellValueFactory(new PropertyValueFactory<Pianta, Integer>("numeroVasca"));
+        TableColumn<Pianta, String> codSalCol = new TableColumn<Pianta, String>("Codice Salone");
+        codSalCol.setCellValueFactory(new PropertyValueFactory<Pianta, String>("codiceSalone"));
+
+        table.getColumns().add(codVegCol);
+        table.getColumns().add(pesoCol);
+        table.getColumns().add(nomeScieCol);
+        table.getColumns().add(numVasCol);
+        table.getColumns().add(codSalCol);
+        try {
+            table.getItems().addAll(db.viewPiante());
+        } catch (SQLException throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+    }
+
 
 
 

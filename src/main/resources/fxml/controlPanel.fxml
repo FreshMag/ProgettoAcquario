@@ -103,7 +103,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.rowIndex="2">
                <children>
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteEsemplare" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Rimuovi un esemplare" textFill="#222ed4">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newImpiegato" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Registra nuovo impiegato" textFill="#222ed4">
                      <font>
                         <Font name="Arial" size="15.0" />
                      </font>
@@ -112,16 +112,16 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.rowIndex="3">
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newImpiegato" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Registra nuovo impiegato" textFill="#222ed4">
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#printMangime" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Visualizzare mangimi per vasca" textFill="#222ed4">
                      <font>
-                        <Font name="Arial" size="15.0" />
+                        <Font name="Arial" size="12.0" />
                      </font>
                   </Button>
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newManutenzione" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Nuova manutenzione vasca" textFill="#222ed4">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#printPiante" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Visualizza piante" textFill="#222ed4">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>
@@ -130,7 +130,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newStaffEvento" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Registra staff evento" textFill="#222ed4">
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteEsemplare" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Rimuovi un esemplare" textFill="#222ed4">
                      <font>
                         <Font name="Arial" size="15.0" />
                      </font>
@@ -139,9 +139,9 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#printMangime" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Visualizzare mangimi per vasca" textFill="#222ed4">
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#printEsemplari" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Visualizza esemplari" textFill="#222ed4">
                      <font>
-                        <Font name="Arial" size="12.0" />
+                        <Font name="Arial" size="14.0" />
                      </font>
                   </Button>
                </children>
@@ -191,6 +191,8 @@
                   </Button>
                </children>
             </VBox>
+            <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.rowIndex="6" />
          </children>
       </GridPane>
    </center>
