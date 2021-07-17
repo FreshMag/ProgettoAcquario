@@ -93,7 +93,6 @@ public class Risorsa implements Insertable{
         + costoSingolo + ",\' "
         + tipologia+ "\',\' "
         + marca + "\', "
-        + numeroVasca + ",\' "
-        + codiceSalone + "\')";
+        + (numeroVasca == 0 ? "null" : numeroVasca) + "," + (codiceSalone.equals("null") ? "null);" : "\'" + codiceSalone + "\');");
     }
 }

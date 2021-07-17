@@ -70,6 +70,6 @@ public class Persona implements Insertable
 
     @Override
     public String getAttributesForQuery() {
-        return "persona values(\'" + codiceFiscale + "\',\' "+ nome + "\',\' " + cognome + "\',\' "+ dataNascita + "\',\' " + contatto + "\',\' " + indirizzo + "\')";
+        return "persona values(\'" + codiceFiscale + "\',\' "+ nome + "\',\' " + cognome + "\',\' "+ dataNascita + "\',\' " + contatto + "\',\' " + indirizzo + "\');";
     }
 }

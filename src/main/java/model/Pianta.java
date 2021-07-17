@@ -65,7 +65,7 @@ public class Pianta implements Insertable, Deletable{
         + pesoKg + ", \'"
         + nomeScientifico + "\', "
         + numeroVasca + ", \'"
-        + codiceSalone + "\')";
+        + codiceSalone + "\');";
     }
 
     @Override

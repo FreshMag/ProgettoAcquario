@@ -103,7 +103,7 @@ public class Esemplare implements Insertable, Deletable{
         + quantitaMangimeHg + ", \'"
         + nomeScientifico + "\', "
         + numeroVasca + ", \'"
-        + codiceSalone + "\')";
+        + codiceSalone + "\');";
 	}
 
     @Override

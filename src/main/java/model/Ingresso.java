@@ -105,10 +105,10 @@ public class Ingresso implements Insertable{
                 + dataIngresso + "\', "
                 + prezzo + ", "
                 + numeroPartecipanti + ", \'"
-                + dataAcquisto + "\', \'"
-                + nome + "\', \'"
-                + dataEvento + "\', \'"
-                + orarioInizio + "\', \'"
-                + codiceFiscale + "\')";
+                + dataAcquisto + "\',"
+                + (nome.equals("null") ? "null, " : "\'" + nome + "\',")
+                + (dataEvento.equals("null") ? "null, " : "\'" + dataEvento + "\',")
+                + (orarioInizio.equals("null") ? "null," : "\'" + orarioInizio + "\',")
+                + (codiceFiscale.equals("null") ? "null);" : "\'" + codiceFiscale + "\');");
     }
 }

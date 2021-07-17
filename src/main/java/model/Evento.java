@@ -64,6 +64,6 @@ public class Evento implements Insertable{
         + nome + "\', \'"
         + orarioInizio + "\', \'"
         + orarioFine + "\', \'"
-        + codiceFiscale + "\')";
+        + codiceFiscale + "\');";
     }
 }

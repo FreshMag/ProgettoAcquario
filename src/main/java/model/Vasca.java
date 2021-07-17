@@ -24,7 +24,7 @@ public class Vasca implements Insertable{
         + dimensione + ",\'"
         + posizione + "\',"
         + aperta + ",\'"
-        + nome + "\')";
+        + nome + "\');";
     }
 
     public int getNumeroVasca() {

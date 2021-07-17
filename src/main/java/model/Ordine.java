@@ -16,7 +16,7 @@ public class Ordine implements Insertable{
     public String getAttributesForQuery() {
         return "ordine values(\'" + codiceOrdine + "\', \'"
                 + dataOrdine + "\', \'"
-                + IDFornitore + "\')";
+                + IDFornitore + "\');";
     }
 
     public String getCodiceOrdine() {
