@@ -190,7 +190,14 @@
                   </Button>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <VBox alignment="CENTER" prefHeight="65.0" prefWidth="600.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <children>
+                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#printOrdini" style="-fx-background-color: #85ccff; -fx-border-color: #222ed4;" text="Visualizza ordini" textFill="#222ed4">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </Button>
+               </children></VBox>
          </children>
       </GridPane>
    </center>

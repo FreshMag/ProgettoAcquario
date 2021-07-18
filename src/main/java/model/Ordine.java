@@ -32,11 +32,11 @@ public class Ordine implements Insertable{
         this.codiceOrdine = codiceOrdine;
     }
 
-    public String getDate() {
+    public String getDataOrdine() {
         return dataOrdine;
     }
 
-    public void setDate(String date) {
+    public void setDataOrdine(String date) {
         this.dataOrdine = date;
     }
 
