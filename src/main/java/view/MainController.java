@@ -632,4 +632,35 @@ public class MainController {
         popUp.setScene(new Scene(anchor));
         popUp.show();
     }
+    
+    public void printOrdini () {
+        this.checkConnection();
+        Stage popUp = new Stage();
+        popUp.setTitle("Visualizza ordini effettuati");
+        popUp.getIcons().add(new Image(getClass().getResourceAsStream("/icons/dbicon2.png")));
+        popUp.setResizable(false);
+        BorderPane anchor = new BorderPane();
+        TableView<Ordine> table = new TableView<Ordine>();
+        TableColumn<Ordine, String> codOrdineCol = new TableColumn<Ordine, String>("Codice Ordine");
+        codOrdineCol.setCellValueFactory(new PropertyValueFactory<Ordine, String>("CodiceOrdine"));
+        TableColumn<Ordine, String> dataOrdineCol = new TableColumn<Ordine, String>("Data Ordine");
+        dataOrdineCol.setCellValueFactory(new PropertyValueFactory<Ordine, String>("DataOrdine"));
+        TableColumn<Ordine, String> IDFornitoreCol = new TableColumn<Ordine, String>("ID Fornitore");
+        IDFornitoreCol.setCellValueFactory(new PropertyValueFactory<Ordine, String>("IDFornitore"));
+
+        table.getColumns().add(codOrdineCol);
+        table.getColumns().add(dataOrdineCol);
+        table.getColumns().add(IDFornitoreCol);
+
+        try {
+            table.getItems().addAll(db.viewOrdini());
+        } catch (Exception throwables) {
+            printError(throwables.getMessage());
+        }
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        anchor.setBottom(table);
+        popUp.setScene(new Scene(anchor));
+        popUp.show();
+ }
+
 }

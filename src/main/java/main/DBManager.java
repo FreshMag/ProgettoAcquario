@@ -256,6 +256,24 @@ public class DBManager {
 			connection.close();
 		return output;
 	}
+	
+	public List<Ordine> viewOrdini() throws SQLException {
+		connection = DBSource.getMySQLConnection();
+		PreparedStatement statement = null;
+		String query = "select * from ordine";
+		statement = connection.prepareStatement(query);
+		ResultSet result = statement.executeQuery();
+		List<Ordine> output = new ArrayList<>();
+		while(result.next()) {
+			Ordine ordine = new Ordine(result.getString(1), result.getDate(2).toString(), result.getString(3));
+			output.add(ordine);
+		}
+		if (statement != null)
+			statement.close();
+		if (connection!= null)
+			connection.close();
+		return output;
+	}
 
 	public List<List<String>> getDistinctKeysFrom(String tableName, List<String> keyNames) throws SQLException {
 		connection = DBSource.getMySQLConnection();
