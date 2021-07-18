@@ -137,7 +137,7 @@ public class MainController {
         //System.out.println(Stream.of(Esemplare.class.getFields()).map(i -> i.getName()).collect(Collectors.toList()));
         List<String> fornitori = null;
         try {
-            fornitori = db.getKeysFrom("fornitore", List.of("IDImpiegato"));
+            fornitori = db.getKeysFrom("fornitore", List.of("IDFornitore"));
         } catch (SQLException throwables) {
             printError(throwables.getMessage());
         }
