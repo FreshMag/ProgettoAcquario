@@ -95,4 +95,9 @@ public class Risorsa implements Insertable{
         + marca + "\', "
         + (numeroVasca == 0 ? "null" : numeroVasca) + "," + (codiceSalone.equals("null") ? "null);" : "\'" + codiceSalone + "\');");
     }
+
+    @Override
+    public String getKey() {
+        return codiceOrdine;
+    }
 }

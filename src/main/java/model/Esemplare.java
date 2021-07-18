@@ -107,6 +107,11 @@ public class Esemplare implements Insertable, Deletable{
 	}
 
     @Override
+    public String getKey() {
+        return codiceEsemplare;
+    }
+
+    @Override
     public String getStringForQuery() {
         return "esemplare where CodiceEsemplare = \'" + codiceEsemplare + "\'";
     }
